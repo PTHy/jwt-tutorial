@@ -32,7 +32,7 @@ app.listen(port, () => {
     console.log(`Express is running on port ${port}`)
 })
 
-
+//connect to mongodb server
 mongoose.connect(config.mongodbUri)
 const db = mongoose.connection
 db.on('error', console.error)
