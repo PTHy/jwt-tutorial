@@ -1,9 +1,10 @@
 /*
-  POST /api/auth/register
-  {
-    username,
-    password
+    POST /api/auth/register
+    {
+        username,
+        password
+    }
 */
-exports.register = (req,res) => {
-  res.send('this router is working');
+exports.register = (req, res) => {
+    res.send('this router is working')
 }
