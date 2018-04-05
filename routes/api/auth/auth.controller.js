@@ -1,4 +1,5 @@
 const User = require('../../../models/user')
+const jwt = require('jsonwebtoken')
 /*
     POST /api/auth/register
     {
@@ -59,5 +60,62 @@ exports.register = (req, res) => {
 }
 
 exports.login = (req,res) => {
-  res.send({'login api is working'})
+  const {username, password} = req.body
+  const secret = req.app.get('jwt-secret')
+
+  //chkeck the user info & generate the jwt
+    //chkeck the user info & generate the jwt
+  const check = (user) => {
+    if(!user) {
+      //user dose not exist
+      throw new Error('login failed')
+    } else {
+      //user exits, check the password
+      if(user.verify(password)) {
+        //create a promise the generates jwt asynchronously
+        const p = new Promise((resolve, reject) => {
+          jwt.sign(
+            {
+              _id : user._id,
+              username: user.username,
+              admin: user.admin
+            },
+            secret,
+            {
+              expiresIn: '7d',
+              issuer: 'velopert.com',
+              subject: 'userInfo'
+            }, (err, token) => {
+              if(err) reject(err)
+              resolve(token)
+            }
+          )
+        })
+        return p
+      } else {
+        throw new Error ('login failed')
+      }
+    }
+  }
+
+  //respond the token
+  const respond = (token) => {
+    res.json({
+      message: 'logged in successfully',
+      token
+    })
+  }
+
+  //error occured
+  const onError = (error) => {
+    res.status(403).json({
+      message: error.message
+    })
+  }
+
+  //find the user
+  User.findOneByUsername(username)
+  .then(check)
+  .then(respond)
+  .catch(onError)
 }
