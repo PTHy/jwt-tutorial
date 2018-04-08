@@ -58,6 +58,9 @@ exports.register = (req, res) => {
     .then(respond)
     .catch(onError)
 }
+/*
+  Login Router
+*/
 exports.login = (req,res) => {
   const {username, password} = req.body
   const secret = req.app.get('jwt-secret')
@@ -118,6 +121,10 @@ exports.login = (req,res) => {
   .then(respond)
   .catch(onError)
 }
+
+/*
+  Check Router
+*/
 exports.check = (req, res) => {
     // read the token from header or url
     const token = req.headers['x-access-token'] || req.query.token
