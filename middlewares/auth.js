@@ -29,4 +29,12 @@ const authMiddleware = (req, res, next) => {
       message: error.message
     })
   }
+
+  //process the promise
+  p.then((decoded) => {
+    req.decoded = decoded
+    next()
+  }).catch(onError)
 }
+
+module.exports = authMiddleware
