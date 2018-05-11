@@ -1,3 +1,5 @@
+//이 코드는 Velopert님의 코드를 참고해서 만든 것임을 밝힙니다.
+
 const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
